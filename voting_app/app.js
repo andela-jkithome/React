@@ -1,7 +1,8 @@
 const ProductList = React.createClass({
   getInitialState: function () {
     return {
-      products: []
+      products: [],
+      sort: true,
     };
   },
 
@@ -11,7 +12,10 @@ const ProductList = React.createClass({
 
   updateState: function () {
     const products = Data.sort((a, b) => {
-      return b.votes - a.votes
+      if (this.state.sort) {
+        return b.votes - a.votes;
+      }
+      return a.votes - b.votes;
     });
     this.setState({products: products});
   },
@@ -36,6 +40,11 @@ const ProductList = React.createClass({
     this.updateState();
   },
 
+  sortDirection: function () {
+    this.state.sort ? this.setState({sort: false}) : this.setState({sort: true});
+    this.updateState();
+  },
+
   render: function () {
     const products = this.state.products.map(product => {
       return (
@@ -55,6 +64,7 @@ const ProductList = React.createClass({
     });
     return (
       <div className='ui items'>
+        <button onClick={this.sortDirection}>Sort Direction</button>
         {products}
       </div>
     );
