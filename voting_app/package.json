@@ -1,11 +1,14 @@
 {
   "name": "voting_app",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "author": "Jeremy Kithome",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "npm run server",
+    "server": "http-server . -p 3000"
+  },
+  "dependencies": {
+    "http-server": "0.9.0"
+  },
   "license": "ISC"
 }
