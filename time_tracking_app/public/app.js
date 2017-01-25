@@ -281,6 +281,12 @@ const ToggleableTimerForm = React.createClass({
 });
 
 const Timer = React.createClass({
+  getInitialState: function () {
+    return {
+      focus: false
+    }
+  },
+
   componentDidMount: function () {
     this.forceUpdateInterval = setInterval(() => this.forceUpdate(), 50);
   },
@@ -301,10 +307,21 @@ const Timer = React.createClass({
     this.props.onTrashClick(this.props.id);
   },
 
+  handleHoverOn: function () {
+    this.setState({ focus: true });
+  },
+
+  handleHoverOff: function () {
+    this.setState({ focus: false});
+  },
+
   render: function () {
     const elapsedString = helpers.renderElapsedString(this.props.elapsed, this.props.runningSince);
     return (
-      <div className='ui centered card'>
+      <div className='ui centered card'
+        onMouseEnter={this.handleHoverOn}
+        onMouseLeave={this.handleHoverOff}
+      >
         <div className='content'>
           <div className='header'>
             {this.props.title}
@@ -317,14 +334,16 @@ const Timer = React.createClass({
               {elapsedString}
             </h2>
           </div>
-          <div className='extra content'>
-            <span className='right floated edit icon' onClick={this.props.onEditClick}>
-              <i className='edit icon'></i>
-            </span>
-            <span className='right floated trash icon' onClick={this.handleTrashClick}>
-              <i className='trash icon'></i>
-            </span>
-          </div>
+          {this.state.focus &&
+            <div className='extra content'>
+              <span className='right floated edit icon' onClick={this.props.onEditClick}>
+                <i className='edit icon'></i>
+              </span>
+              <span className='right floated trash icon' onClick={this.handleTrashClick}>
+                <i className='trash icon'></i>
+              </span>
+            </div>
+          }
         </div>
         <TimerActionButton
           timerIsRunning={!!this.props.runningSince}
