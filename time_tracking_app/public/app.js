@@ -288,7 +288,12 @@ const Timer = React.createClass({
   },
 
   componentDidMount: function () {
-    this.forceUpdateInterval = setInterval(() => this.forceUpdate(), 50);
+    this.forceUpdateInterval = setInterval(() => {
+      if (this.forceUpdateInterval) {
+        clearInterval(this.forceUpdateInterval);
+      }
+      this.forceUpdate();
+    }, 50);
   },
 
   componentWillUnMount: function () {
