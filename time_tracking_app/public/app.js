@@ -56,10 +56,17 @@ const EditableTimerList = React.createClass({
 });
 
 const EditableTimer = React.createClass({
+  getInitialState: function () {
+    return {
+      editFormOpen: false
+    }
+  },
+
   render: function () {
-    if (this.props.editFormOpen) {
+    if (this.state.editFormOpen) {
       return (
         <TimerForm
+          id={this.props.id}
           title={this.props.title}
           project={this.props.project}
         />
@@ -67,6 +74,7 @@ const EditableTimer = React.createClass({
     } else {
       return (
         <Timer
+          id={this.props.id}
           title={this.props.title}
           project={this.props.project}
           elapsed={this.props.elapsed}
@@ -108,15 +116,25 @@ const TimerForm = React.createClass({
 });
 
 const ToggleableTimerForm = React.createClass({
+  getInitialState: function () {
+    return {
+      isOpen: false
+    };
+  },
+
+  handleFormOpen: function () {
+    this.setState({isOpen: true});
+  },
+
   render: function () {
-    if (this.props.isOpen) {
+    if (this.state.isOpen) {
       return (
         <TimerForm />
       );
     } else {
       return (
         <div className='ui basic content center aligned segment'>
-          <button className='ui basic button icon'>
+          <button className='ui basic button icon' onClick={this.handleFormOpen}>
             <i className='plus icon'></i>
           </button>
         </div>
