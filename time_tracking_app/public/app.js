@@ -29,6 +29,10 @@ const TimersDashboard = React.createClass({
     this.updateTimer(attrs);
   },
 
+  handleTrashClick: function (timerId) {
+    this.deleteTimer(timerId);
+  },
+
   createTimer: function (timer) {
     const t = helpers.newTimer(timer);
     this.setState({
@@ -51,11 +55,9 @@ const TimersDashboard = React.createClass({
     });
   },
 
-  deleteTimer: function (id) {
+  deleteTimer: function (timerId) {
     this.setState({
-      timers: this.state.timers.filter(timer => {
-        return timer.id !== id;
-      })
+      timers: this.state.timers.filter(timer => timer.id !== timerId)
     });
   },
 
@@ -66,7 +68,7 @@ const TimersDashboard = React.createClass({
           <EditableTimerList
             timers={this.state.timers}
             onFormSubmit={this.handleEditFormSubmit}
-            onTimerDelete={this.deleteTimer}
+            onTrashClick={this.handleTrashClick}
           />
           <ToggleableTimerForm
             onFormSubmit={this.handleCreateFormSubmit}
@@ -88,7 +90,7 @@ const EditableTimerList = React.createClass({
         elapsed={timer.elapsed}
         runningSince={timer.runningSince}
         onFormSubmit={this.props.onFormSubmit}
-        timerDelete={this.props.onTimerDelete}
+        onTrashClick={this.props.onTrashClick}
       />
     ));
     return (
@@ -119,10 +121,6 @@ const EditableTimer = React.createClass({
     this.closeForm();
   },
 
-  handleDeleteClick: function (id) {
-    this.props.timerDelete(id);
-  },
-
   closeForm: function () {
     this.setState({ editFormOpen: false});
   },
@@ -151,7 +149,7 @@ const EditableTimer = React.createClass({
           elapsed={this.props.elapsed}
           runningSince={this.props.runningSince}
           onEditClick={this.handleEditClick}
-          onTrashClick={this.handleDeleteClick}
+          onTrashClick={this.props.onTrashClick}
         />
       );
     }
@@ -237,7 +235,7 @@ const ToggleableTimerForm = React.createClass({
 });
 
 const Timer = React.createClass({
-  deleteTimer: function () {
+  handleTrashClick: function () {
     this.props.onTrashClick(this.props.id);
   },
 
@@ -261,7 +259,7 @@ const Timer = React.createClass({
             <span className='right floated edit icon' onClick={this.props.onEditClick}>
               <i className='edit icon'></i>
             </span>
-            <span className='right floated trash icon' onClick={this.deleteTimer}>
+            <span className='right floated trash icon' onClick={this.handleTrashClick}>
               <i className='trash icon'></i>
             </span>
           </div>
