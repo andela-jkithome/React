@@ -79,6 +79,11 @@ const TimersDashboard = React.createClass({
         }
       })
     });
+
+    client.startTimer({
+      id: timerId,
+      start: now
+    });
   },
 
   stopTimer: function (timerId) {
@@ -95,6 +100,11 @@ const TimersDashboard = React.createClass({
           return timer;
         }
       })
+    });
+
+    client.stopTimer({
+      id: timerId,
+      stop: now
     });
   },
 
